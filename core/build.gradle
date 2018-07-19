@@ -20,20 +20,19 @@ def getProperty(String filename, String propName) {
 
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
-
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "YOUTUBE_API_KEY", "\"${getProperty("local.properties", "youtubeKey")}\""
         buildConfigField "String", "YOUTUBE_BASE_URL", "\"${getProperty("local.properties", "youtubeBaseUrl")}\""
+        buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
     }
-
     buildTypes {
         release {
             postprocessing {
@@ -43,20 +42,17 @@ android {
                 optimizeCode false
                 proguardFile 'proguard-rules.pro'
             }
-            buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
-            buildConfigField "String", "YOUTUBE_API_KEY", "\"${getProperty("local.properties", "youtubeKey")}\""
-            buildConfigField "String", "YOUTUBE_BASE_URL", "\"${getProperty("local.properties", "youtubeBaseUrl")}\""
+
         }
         debug {
-            buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
-            buildConfigField "String", "YOUTUBE_API_KEY", "\"${getProperty("local.properties", "youtubeKey")}\""
-            buildConfigField "String", "YOUTUBE_BASE_URL", "\"${getProperty("local.properties", "youtubeBaseUrl")}\""
+
         }
     }
-
     compileOptions {
         sourceCompatibility versions.sourceCompat
         targetCompatibility versions.targetCompat
+    }
+    productFlavors {
     }
 }
 
@@ -67,31 +63,23 @@ dependencies {
     api deps.support.cardView
     api deps.support.support
     api deps.support.designSupport
-
     api deps.android.lifecycleExt
     api deps.android.lifecycleCommon
     api deps.android.roomRuntime
     api deps.android.roomRx
-
     api deps.kotlin.stdlib
-
     api deps.reactivex.rxJava
     api deps.reactivex.rxAndroid
-
     api deps.google.dagger
     kapt deps.google.daggerProcessor
     api deps.google.gson
-
     api deps.square.picasso
     api deps.square.okhttpDownloader
-
     api deps.square.retrofit
     api deps.square.okhttp
     api deps.square.gsonConverter
     api deps.square.retrofitRxAdapter
-
     api deps.additional.jodaTime
-
     api deps.facebook.stetho
     api deps.facebook.networkInterceptor
 }

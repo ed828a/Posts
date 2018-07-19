@@ -22,8 +22,8 @@ class ListRepository(
         private val scheduler: Scheduler,
         private val compositeDisposable: CompositeDisposable
 ) : ListDataContract.Repository {
-    override val videoFetchOutcome: PublishSubject<Outcome<List<VideoModel>>>
-        get() = PublishSubject.create()
+    override val videoFetchOutcome: PublishSubject<Outcome<List<VideoModel>>> =
+            PublishSubject.create<Outcome<List<VideoModel>>>()
 
     override fun fetchVideos() {
         videoFetchOutcome.loading(true)

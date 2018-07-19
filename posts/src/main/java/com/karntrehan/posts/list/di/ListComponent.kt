@@ -8,20 +8,21 @@ import com.karntrehan.posts.commons.data.remote.YoutubeAPI
 import com.karntrehan.posts.core.constants.Constants
 import com.karntrehan.posts.core.di.CoreComponent
 import com.karntrehan.posts.core.networking.Scheduler
-import com.karntrehan.posts.list.viewmodel.ListActivity
-import com.karntrehan.posts.list.viewmodel.ListAdapter
 import com.karntrehan.posts.list.model.ListDataContract
 import com.karntrehan.posts.list.model.ListLocalData
 import com.karntrehan.posts.list.model.ListRemoteData
 import com.karntrehan.posts.list.model.ListRepository
+import com.karntrehan.posts.list.viewmodel.ListActivity
+import com.karntrehan.posts.list.viewmodel.ListAdapter
 import com.karntrehan.posts.list.viewmodel.ListViewModelFactory
+import com.karntrehan.posts.list.youtube.YoutubeActivity
+import com.karntrehan.posts.list.youtube.YoutubeViewModelFactory
 import com.squareup.picasso.Picasso
 import dagger.Component
 import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
 @ListScope
 @Component(dependencies = [CoreComponent::class], modules = [ListModule::class])
@@ -36,15 +37,22 @@ interface ListComponent {
     fun provideYoutubeApi(): YoutubeAPI
 
     fun inject(listActivity: ListActivity)
+    fun inject(youtubeActivity: YoutubeActivity)
 }
 
 @Module
 @ListScope
 class ListModule {
 
-    @Singleton
+
     @Provides
     fun provideYoutubeApi(): YoutubeAPI = YoutubeAPI.create()
+
+    @Provides
+    fun provideYoutubeViewModelFactory(repository: ListDataContract.Repository,
+                                       compositeDisposable: CompositeDisposable): YoutubeViewModelFactory {
+        return YoutubeViewModelFactory(repository, compositeDisposable)
+    }
 
     /*Adapter*/
     @Provides

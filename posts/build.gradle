@@ -4,13 +4,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
-
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.karntrehan.posts"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
+        minSdkVersion 19
+        targetSdkVersion 27
         versionCode 3
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,12 +29,13 @@ android {
         sourceCompatibility versions.sourceCompat
         targetCompatibility versions.targetCompat
     }
-
     //For testing
     testOptions {
         unitTests {
             includeAndroidResources = true
         }
+    }
+    productFlavors {
     }
 }
 
@@ -45,9 +45,10 @@ androidExtensions {
 
 dependencies {
     implementation project(':core')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+
     kapt deps.android.roomCompiler
     kapt deps.google.daggerProcessor
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //Local unit tests
@@ -57,7 +58,6 @@ dependencies {
     testImplementation deps.test.mockWebServer
     testImplementation deps.test.livedataTesting
     testImplementation deps.test.roomTesting
-
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.mockitoKotlin
     androidTestImplementation deps.test.atslRunner
