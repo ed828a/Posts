@@ -29,7 +29,7 @@ class DetailsRepository(
         local.getCommentsForPost(postId)
             .performOnBackOutOnMain(scheduler)
             .doAfterNext {
-                if (Synk.shouldSync(SynkKeys.POST_DETAILS + "_" + postId, 2, TimeUnit.HOURS))
+                if (Synk.shouldSync("${SynkKeys.POST_DETAILS}_$postId", 2, TimeUnit.HOURS))
                     refreshComments(postId)
             }
             .subscribe({ comments ->

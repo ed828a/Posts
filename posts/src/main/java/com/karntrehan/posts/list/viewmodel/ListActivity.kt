@@ -1,4 +1,4 @@
-package com.karntrehan.posts.list
+package com.karntrehan.posts.list.viewmodel
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -13,10 +13,7 @@ import com.karntrehan.posts.commons.PostDH
 import com.karntrehan.posts.commons.data.PostWithUser
 import com.karntrehan.posts.core.application.BaseActivity
 import com.karntrehan.posts.details.DetailsActivity
-import com.karntrehan.posts.list.viewmodel.ListViewModel
-import com.karntrehan.posts.list.viewmodel.ListViewModelFactory
 import com.mpaani.core.networking.Outcome
-import io.reactivex.exceptions.CompositeException
 import kotlinx.android.synthetic.main.activity_list.*
 import java.io.IOException
 import javax.inject.Inject
@@ -47,10 +44,15 @@ class ListActivity : BaseActivity(), ListAdapter.PostInteractor {
         rvPosts.adapter = adapter
         srlPosts.setOnRefreshListener { viewModel.refreshPosts() }
 
-        viewModel.getPosts()
+        getPosts()
         initiateDataListener()
     }
 
+    private fun getPosts(){
+        // remove the delay of generating outcome
+        srlPosts.isRefreshing = true
+        viewModel.getPosts()
+    }
     private fun initiateDataListener() {
         //Observe the outcome and update state of the screen  accordingly
         viewModel.postsOutcome.observe(this, Observer<Outcome<List<PostWithUser>>> { outcome ->

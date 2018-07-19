@@ -45,8 +45,10 @@ androidExtensions {
 
 dependencies {
     implementation project(':core')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     kapt deps.android.roomCompiler
     kapt deps.google.daggerProcessor
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     //Local unit tests
     testImplementation deps.test.junit

@@ -1,4 +1,4 @@
-package com.karntrehan.posts.list
+package com.karntrehan.posts.list.viewmodel
 
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
@@ -11,7 +11,6 @@ import com.karntrehan.posts.R
 import com.karntrehan.posts.commons.data.PostWithUser
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.post_item.view.*
-import java.math.BigInteger
 
 class ListAdapter(private val picasso: Picasso) :
     RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
@@ -20,13 +19,10 @@ class ListAdapter(private val picasso: Picasso) :
     var interactor: PostInteractor? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        return ListViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.post_item,
-                parent,
-                false
-            )
-        )
+        val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.post_item, parent, false)
+
+        return ListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -45,8 +41,14 @@ class ListAdapter(private val picasso: Picasso) :
     }
 
     fun setData(data: List<PostWithUser>?) {
-        this.data = data ?: this.data
-        notifyDataSetChanged()
+//        this.data = data ?: this.data
+//        notifyDataSetChanged()
+
+        // above should be
+        if (data != null) {
+            this.data = data
+            notifyDataSetChanged()
+        }
     }
 
     class ListViewHolder(view: View) : RecyclerView.ViewHolder(view) {

@@ -16,7 +16,8 @@ data class PostWithUser(@PrimaryKey val postId: Int,
         return if (postBody.length <= 70)
             postBody
         else
-            postBody.substring(0, 67) + "..."
+            "${postBody.substring(0, 67)} ..."
+//        postBody.substring(0, 67) + "..."
     }
 
     fun getAvatarPhoto() = "https://api.adorable.io/avatars/64/$userName.png"

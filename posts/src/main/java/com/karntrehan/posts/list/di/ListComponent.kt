@@ -4,11 +4,12 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.karntrehan.posts.commons.data.local.PostDb
 import com.karntrehan.posts.commons.data.remote.PostService
+import com.karntrehan.posts.commons.data.remote.YoutubeAPI
 import com.karntrehan.posts.core.constants.Constants
 import com.karntrehan.posts.core.di.CoreComponent
 import com.karntrehan.posts.core.networking.Scheduler
-import com.karntrehan.posts.list.ListActivity
-import com.karntrehan.posts.list.ListAdapter
+import com.karntrehan.posts.list.viewmodel.ListActivity
+import com.karntrehan.posts.list.viewmodel.ListAdapter
 import com.karntrehan.posts.list.model.ListDataContract
 import com.karntrehan.posts.list.model.ListLocalData
 import com.karntrehan.posts.list.model.ListRemoteData
@@ -20,6 +21,7 @@ import dagger.Module
 import dagger.Provides
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @ListScope
 @Component(dependencies = [CoreComponent::class], modules = [ListModule::class])
@@ -31,6 +33,7 @@ interface ListComponent {
     fun postService(): PostService
     fun picasso(): Picasso
     fun scheduler(): Scheduler
+    fun provideYoutubeApi(): YoutubeAPI
 
     fun inject(listActivity: ListActivity)
 }
@@ -38,6 +41,10 @@ interface ListComponent {
 @Module
 @ListScope
 class ListModule {
+
+    @Singleton
+    @Provides
+    fun provideYoutubeApi(): YoutubeAPI = YoutubeAPI.create()
 
     /*Adapter*/
     @Provides
@@ -56,7 +63,7 @@ class ListModule {
 
     @Provides
     @ListScope
-    fun remoteData(postService: PostService): ListDataContract.Remote = ListRemoteData(postService)
+    fun remoteData(postService: PostService, youtubeAPI: YoutubeAPI): ListDataContract.Remote = ListRemoteData(postService, youtubeAPI)
 
     @Provides
     @ListScope
@@ -74,4 +81,6 @@ class ListModule {
     @Provides
     @ListScope
     fun postService(retrofit: Retrofit): PostService = retrofit.create(PostService::class.java)
+
+
 }

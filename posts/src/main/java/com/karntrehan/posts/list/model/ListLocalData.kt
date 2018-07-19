@@ -1,6 +1,7 @@
 package com.karntrehan.posts.list.model
 
 import com.karntrehan.posts.commons.data.PostWithUser
+import com.karntrehan.posts.commons.data.datatype.VideoModel
 import com.karntrehan.posts.commons.data.local.Post
 import com.karntrehan.posts.commons.data.local.PostDb
 import com.karntrehan.posts.commons.data.local.User
@@ -10,6 +11,17 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 
 class ListLocalData(private val postDb: PostDb, private val scheduler: Scheduler) : ListDataContract.Local {
+    override fun getVideos(): Flowable<List<VideoModel>> {
+        return postDb.youtubeDao().getAll()
+    }
+
+    override fun saveVideos(videos: List<VideoModel>) {
+        Completable.fromAction {
+            postDb.youtubeDao().insertAll(videos)
+        }
+                .performOnBack(scheduler)
+                .subscribe()
+    }
 
     override fun getPostsWithUsers(): Flowable<List<PostWithUser>> {
         return postDb.postDao().getAllPostsWithUser()

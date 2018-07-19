@@ -6,9 +6,14 @@ import com.karntrehan.posts.list.model.ListDataContract
 import io.reactivex.disposables.CompositeDisposable
 
 @Suppress("UNCHECKED_CAST")
-class ListViewModelFactory(private val repository: ListDataContract.Repository, private val compositeDisposable: CompositeDisposable) :
-        ViewModelProvider.Factory {
+class ListViewModelFactory(
+        private val repository: ListDataContract.Repository,
+        private val compositeDisposable: CompositeDisposable
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ListViewModel(repository, compositeDisposable) as T
+        if (modelClass.isAssignableFrom(ListViewModel::class.java))
+            return ListViewModel(repository, compositeDisposable) as T
+        else
+            throw IllegalArgumentException("Unknown ViewModel Class")
     }
 }
