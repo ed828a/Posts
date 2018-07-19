@@ -36,7 +36,7 @@ class NetworkModule {
     @Singleton
     fun providesOkHttpClient(cache: Cache): OkHttpClient {
         val client = OkHttpClient.Builder()
-            .cache(cache)
+//            .cache(cache)
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
@@ -50,7 +50,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun providesOkhttpCache(context: Context): Cache {
-        val cacheSize = 10 * 1024 * 1024 // 10 MB
+        val cacheSize = 1 * 1024 * 1024 // 10 MB
         return Cache(context.cacheDir, cacheSize.toLong())
     }
 

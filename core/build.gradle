@@ -32,7 +32,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "YOUTUBE_API_KEY", "\"${getProperty("local.properties", "youtubeKey")}\""
         buildConfigField "String", "YOUTUBE_BASE_URL", "\"${getProperty("local.properties", "youtubeBaseUrl")}\""
-        buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
+//        buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
     }
     buildTypes {
         release {
@@ -43,10 +43,10 @@ android {
                 optimizeCode false
                 proguardFile 'proguard-rules.pro'
             }
-
+            buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
         }
         debug {
-
+            buildConfigField 'String', 'BASE_URL', '"http://jsonplaceholder.typicode.com/"'
         }
     }
     compileOptions {
