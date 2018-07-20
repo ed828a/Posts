@@ -31,16 +31,16 @@ class YoutubeActivity : AppCompatActivity(), VideoAdapter.VideoInteractor {
 
     lateinit var adapter: VideoAdapter
     private val context: Context by lazy { this }
-    private val TAG = "YoutubeActivity"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_youtube)
 
-
-        adapter.interactor = this
         adapter = VideoAdapter(picasso)
+        adapter.interactor = this
+
         videoListView.adapter = adapter
 
         swipeRefreshLayout.setOnRefreshListener { viewModel.refreshVideos() }
@@ -50,19 +50,25 @@ class YoutubeActivity : AppCompatActivity(), VideoAdapter.VideoInteractor {
     }
 
     private fun getVideos() {
+        Log.d(YOUTUBETAG, "getVideos called")
         swipeRefreshLayout.isRefreshing = true
         viewModel.getVideos()
     }
 
     private fun initiateVideoDataListener() {
+        Log.d(YOUTUBETAG, "initiateVideoDataListener called")
         viewModel.videosOutcome.observe(this, Observer<Outcome<List<VideoModel>>> { outcome ->
-            Log.d(TAG, "initiateVideoDataListener: Outcome: ${outcome.toString()}")
+            Log.d(YOUTUBETAG, "initiateVideoDataListener: Outcome = ${outcome.toString()}")
 
             when (outcome) {
                 is Outcome.Progress -> swipeRefreshLayout.isRefreshing = outcome.loading
                 is Outcome.Success -> {
-                    Log.d(TAG, "initVideoDataListener: Successfully: Outcome.data = ${outcome.data}")
-                    adapter.setData(outcome.data)
+                    Log.d(YOUTUBETAG, "initiateVideoDataListener: Successfully: Outcome.data = ${outcome.data}")
+                    if (outcome.data.isEmpty()){
+                        viewModel.refreshVideos()
+                    } else {
+                        adapter.setData(outcome.data)
+                    }
                 }
 
                 is Outcome.Failure -> {

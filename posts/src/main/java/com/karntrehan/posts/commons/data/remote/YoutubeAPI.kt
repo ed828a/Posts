@@ -1,8 +1,10 @@
 package com.karntrehan.posts.commons.data.remote
 
 import android.util.Log
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.karntrehan.posts.commons.data.datatype.YoutubeResponse
 import com.karntrehan.posts.core.BuildConfig
+import com.karntrehan.posts.list.youtube.YOUTUBETAG
 import io.reactivex.Single
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -40,7 +42,10 @@ interface YoutubeAPI {
 
     companion object {
 
-        fun create(): YoutubeAPI = createYoutubeApi(HttpUrl.parse(BuildConfig.YOUTUBE_BASE_URL)!!)
+        fun create(): YoutubeAPI {
+            Log.d(YOUTUBETAG, "YoutubeAPI create() called")
+            return createYoutubeApi(HttpUrl.parse(BuildConfig.YOUTUBE_BASE_URL)!!)
+        }
         private fun createYoutubeApi(httpUrl: HttpUrl): YoutubeAPI {
             val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
                 Log.d("YoutubeAPI", it)
@@ -53,6 +58,7 @@ interface YoutubeAPI {
                     .baseUrl(httpUrl)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build()
                     .create(YoutubeAPI::class.java)
         }
